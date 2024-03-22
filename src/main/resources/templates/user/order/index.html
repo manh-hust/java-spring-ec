@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/user/layout}">
+      lang="vi"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách hóa đơn</title>
+    <link rel="stylesheet" th:href="@{/css/custom/user/order.css}"/>
+    <script defer th:src="@{/js/custom/order.js}"></script>
+</head>
+<body>
+<section layout:fragment="content" class="h-100 main bg-transparent container-fluid d-flex flex-row pb-3">
+    <form id="sidebar" class="rounded-lg shadow-sm p-2 bg-white">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Hóa đơn</li>
+            </ol>
+        </nav>
+        <div class="border-bottom pb-2 ml-2">
+            <h4 class="text-center font-weight-bold">Lọc hóa đơn</h4>
+        </div>
+        <div id="time" class="py-2 border-bottom ml-2">
+            <div type="button" style="gap: 1rem"
+                 class="filter-title btn btn-sm btn-secondary font-weight-bold mb-3 d-inline-flex align-items-center"
+                 data-toggle="collapse" data-target="#time_filter" role="button"
+                 aria-expanded="false" aria-controls="time_filter">
+                Thời gian tạo <i class="fa-solid fa-caret-right"></i></div>
+            <div id="time_filter" class="collapse mt-2" th:classappend="(${param.from} or ${param.to}) ? 'show' : ''"
+                 style="gap: 10px">
+                <label><span class="d-inline-block" style="width: 80px;">Từ ngày:</span>
+                    <input name="from" type="date"
+                           th:value="${#dates.format(filter.from, 'YYYY-MM-dd')}"
+                           class="date-picker py-1 px-2 text-reset border border-secondary"
+                           id="from_date"/>
+                </label>
+                <label><span class="d-inline-block" style="width: 80px;">Đến ngày:</span>
+                    <input name="to" type="date"
+                           th:value="${#dates.format(filter.to, 'YYYY-MM-dd')}"
+                           class="date-picker py-1 px-2 text-reset border border-secondary"
+                           id="to_date"/>
+                </label>
+            </div>
+        </div>
+        <div id="status" class="py-2 border-bottom ml-2 flex-wrap">
+            <span type="button" style="gap: 1rem"
+                  class="filter-title btn btn-sm btn-secondary font-weight-bold mb-3 d-inline-flex align-items-center"
+                  data-toggle="collapse" data-target="#status_filter" role="button"
+                  aria-expanded="false" aria-controls="status_filter">
+                Trạng thái <i class="fa-solid fa-caret-right"></i></span>
+            <div id="status_filter" class="collapse" th:classappend="(${param.s}) ? 'show' : ''">
+                <select name="s" id="select_status" class="custom-select">
+                    <option value="" th:selected="${filter.s}==''">Tất cả</option>
+                    <option value="pending" th:selected="${filter.s}=='pending'">Đang chờ</option>
+                    <option value="accepted" th:selected="${filter.s}=='accepted'">Xác nhận</option>
+                    <option value="rejected" th:selected="${filter.s}=='rejected'">Từ chối</option>
+                    <option value="cancelled" th:selected="${filter.s}=='cancelled'">Hủy</option>
+                    <option value="shipping" th:selected="${filter.s}=='shipping'">Đang giao</option>
+                    <option value="completed" th:selected="${filter.s}=='completed'">Đã giao</option>
+                </select></div>
+        </div>
+        <div class="py-2 pt-3 ml-2 flex-wrap text-center">
+            <button type="submit" class="btn btn-primary">Lọc hóa đơn</button>
+        </div>
+    </form>
+    <div id="order-table">
+        <section class="orders">
+            <h2 th:if="${to==0}">Không có hóa đơn nào được tìm thấy -> <a th:href="@{/orders}">xóa bộ lọc</a></h2>
+            <th:block th:each="order :${orders}">
+                <div th:replace="~{fragments/order ::
+                        order(
+                        ${order.id},
+                        ${order.firstProduct},
+                        ${order.getOrderDetails().size()},
+                        ${order.orderDetails.get(0).quantity},
+                        ${order.totalPrice},
+                        ${order.status},
+                        ${#dates.format(order.createdAt, 'dd/MM/yyyy')}
+                        )}"
+                >
+                </div>
+            </th:block>
+        </section>
+        <div class="table-footer d-flex justify-content-between align-items-end">
+            <p>
+                <span th:text="${from}"></span>-<span th:text="${to}"></span>
+                trong tổng số <span th:text="${totalItems}"></span> hóa đơn
+            </p>
+            <div th:replace="~{fragments/pagination :: pagination('orders?'+'from='+${filter.from==null?'':#dates.format(filter.from, 'YYYY-MM-dd')}+'&to='+${filter.to ==null?'': #dates.format(filter.to, 'YYYY-MM-dd')}+'&s='+${filter.s}, ${totalPages}, ${currentPage})}"></div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

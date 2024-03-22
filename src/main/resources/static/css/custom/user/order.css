@@ -1,0 +1,121 @@
+.order_status {
+    font-size: .8em;
+    font-weight: 600;
+    width: 200px;
+    height: 100px;
+    top: -70px;
+    right: -70px;
+    transform: rotate(45deg) translate(37px);
+}
+
+.order_status.pending {
+    background-color: #c2b398;
+}
+
+.order_status.accepted {
+    background-color: var(--info);
+}
+
+.order_status.rejected {
+    background-color: var(--danger);
+}
+
+.order_status.cancelled {
+    background-color: var(--warning);
+}
+
+.order_status.shipping {
+    background-color: var(--success);
+}
+
+.order_status.completed {
+    background-color: var(--primary);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url('/images/icons8-calendar-96.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    cursor: pointer;
+}
+
+.date-picker {
+    width: 140px;
+    outline: none;
+    border-radius: 5px;
+}
+
+/*#filter-btn{*/
+/*    background-color: transparent;*/
+/*    border: 1px solid orange;*/
+/*    border-radius: 5px;*/
+/*    color: orange;*/
+/*    transition: .2s ease-in-out;*/
+/*    font-size: 12px;*/
+/*}*/
+.order-color {
+    color: blue;
+}
+
+.main {
+    margin-top: 1rem;
+}
+
+#sidebar {
+    width: 20%;
+}
+
+#order-table {
+    width: 80%;
+    padding: 0 2rem;
+}
+
+.orders {
+    display: flex;
+    gap: 12px calc((100% - 32.5% * 3) / 2);
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    height: calc(250px * 2 + 12px);
+}
+
+.order_card {
+    width: 32.5%;
+    height: 250px;
+}
+
+.first-product {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 10px;
+}
+
+.img-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.product-desc {
+    width: calc(100% - 110px);
+}
+
+/*.first-product{*/
+/*    w*/
+/*}*/
+.payments-item img.mr-3 {
+    width: 47px;
+}
+
+.order-list .btn {
+    border-radius: 2px;
+    min-width: 121px;
+    font-size: 13px;
+    padding: 7px 0 7px 0;
+}
+.filter-title i{
+    transition: all .4s;
+}
